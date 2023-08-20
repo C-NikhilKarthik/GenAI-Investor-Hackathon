@@ -1,11 +1,12 @@
 
 import { RequestHandler, Response } from 'express';
-import userModel from '../models/userSchema';
+import userModel from '../models/UserSchema';
 import { generateToken } from '../middlewares/auth';
 import { IError } from '../types/IError';
+//@ts-ignore
 import { google } from 'googleapis';
 import axios from 'axios';
-import { IRequest } from '../types/IRequest';
+// import { IRequest } from '../types/IRequest';
 
 //@ts-ignore
 export const handleCallback: RequestHandler = async (req, res, next) => {

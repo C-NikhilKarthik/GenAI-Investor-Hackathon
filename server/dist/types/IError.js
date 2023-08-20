@@ -9,3 +9,4 @@ class IError extends Error {
     }
 }
 exports.IError = IError;
+//# sourceMappingURL=IError.js.map

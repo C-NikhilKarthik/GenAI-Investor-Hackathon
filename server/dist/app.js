@@ -51,3 +51,4 @@ server.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     })
         .catch((err) => console.log("Couldn't connect to mongodb :" + err));
 }));
+//# sourceMappingURL=app.js.map

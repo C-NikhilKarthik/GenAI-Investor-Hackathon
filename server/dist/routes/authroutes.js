@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const authController_1 = require("../controllers/authController");
+const authcontroller_1 = require("../controllers/authcontroller");
 const authRouter = express_1.default.Router();
-authRouter.post('/oauth/google', authController_1.handleCallback);
+authRouter.post('/oauth/google', authcontroller_1.handleCallback);
 exports.default = authRouter;
+//# sourceMappingURL=authroutes.js.map

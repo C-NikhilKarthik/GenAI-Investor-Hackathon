@@ -9,7 +9,6 @@ const IError_1 = require("../types/IError");
 let err;
 const tokenDecode = (req) => {
     var _a;
-    //@ts-ignore
     const token = (_a = req.header('Authorization')) === null || _a === void 0 ? void 0 : _a.replace('Bearer ', '');
     if (!token) {
         return new IError_1.IError('Token is Absent', 401);
@@ -35,12 +34,6 @@ const isAuth = (req, res, next) => {
     }
 };
 exports.isAuth = isAuth;
-/**
- *
- * @param id MongoDB Object ID of the user
- * @param email email of the user
- * @returns
- */
 const generateToken = (id, email) => {
     const token = jsonwebtoken_1.default.sign({ id, email }, process.env.JWT_SECRET || 'somesecret', {
         expiresIn: '7d',
@@ -48,3 +41,4 @@ const generateToken = (id, email) => {
     return token;
 };
 exports.generateToken = generateToken;
+//# sourceMappingURL=auth.js.map

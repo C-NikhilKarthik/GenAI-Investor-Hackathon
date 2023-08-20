@@ -13,16 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleCallback = void 0;
-const userSchema_1 = __importDefault(require("../models/userSchema"));
+const UserSchema_1 = __importDefault(require("../models/UserSchema"));
 const auth_1 = require("../middlewares/auth");
 const IError_1 = require("../types/IError");
 const googleapis_1 = require("googleapis");
 const axios_1 = __importDefault(require("axios"));
-//@ts-ignore
 const handleCallback = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     try {
-        // Inititate oauth client
         const oauth2Client = new googleapis_1.google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URL);
         const { code } = req.body;
         if (!code) {
@@ -43,7 +41,7 @@ const handleCallback = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 exports.handleCallback = handleCallback;
 function handleUsercreation(email, profileImage, name, access_token, refresh_token, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const user = new userSchema_1.default({
+        const user = new UserSchema_1.default({
             email,
             name,
             profileImage,
@@ -53,7 +51,7 @@ function handleUsercreation(email, profileImage, name, access_token, refresh_tok
         let updated;
         updated = yield user.save().catch((error) => __awaiter(this, void 0, void 0, function* () {
             if (error.code === 11000) {
-                const updateUser = yield userSchema_1.default.findOneAndUpdate({ email }, { $set: { access_token, refresh_token } });
+                const updateUser = yield UserSchema_1.default.findOneAndUpdate({ email }, { $set: { access_token, refresh_token } });
                 res.status(200).json({
                     userId: updateUser === null || updateUser === void 0 ? void 0 : updateUser._id.toString(),
                     token: (0, auth_1.generateToken)(updateUser._id.toString(), updateUser.email),
@@ -70,3 +68,4 @@ function handleUsercreation(email, profileImage, name, access_token, refresh_tok
         }
     });
 }
+//# sourceMappingURL=authcontroller.js.map
