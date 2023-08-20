@@ -6,13 +6,13 @@ export default function LandingPage() {
     <div className="flex relative flex-col w-full">
       <Navbar />
 
-      <div className=" md:px-32 p-4 h-screen bg-gradient-to-bl from-violet-300 to-slate-100 dark:from-slate-950 dark:to-slate-800 w-screen flex items-center justify-center">
-        <div className="w-full justify-between flex md:flex-row flex-col">
-          <div className="flex flex-1 justify-center flex-col items-center">
-            <div className="text-slate-900 dark:text-slate-200 text-[clamp(56px,6vw,36px)] font-semibold">
+      <div className="p-3 h-screen bg-gradient-to-bl from-violet-300 to-slate-100 dark:from-slate-950 dark:to-slate-800 w-screen flex items-center justify-center">
+        <div className="w-fit gap-5 justify-between flex lg:flex-row flex-col items-center">
+          <div className="flex flex-1 justify-center w-fit flex-col items-center">
+            <div className="text-slate-900 text-center w-fit md:whitespace-nowrap dark:text-slate-200 text-[clamp(36px,6vw,54px)] leading-[1.1] font-semibold">
               AI-Powered Personalization
             </div>
-            <div className="text-slate-700 dark:text-slate-400 text-[clamp(36px,6vw,30px)] font-semibold">
+            <div className="text-slate-700 text-center dark:text-slate-400 text-[clamp(24px,6vw,30px)] leading-[1] font-semibold">
               Tailored content, interactive experiences
             </div>
             <Link to="/login">
@@ -25,7 +25,7 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <div className="min-w-[260px] w-[350px]">
+          <div className=" max-w-[320px]">
             <img src={"./Landing.png"} alt="LandingImage" />
           </div>
         </div>
