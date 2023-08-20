@@ -23,7 +23,6 @@ const app = (0, express_1.default)();
 (0, dotenv_1.config)();
 const port = process.env.PORT || 5000;
 const mongoURL = process.env.MONGODB_URL || "mongodb+srv://mandar767:mandar2586@mandar.7wcjdwj.mongodb.net/";
-app.use('/auth', authroutes_1.default);
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.static('media'));
@@ -41,6 +40,7 @@ app.use((error, req, res, next) => {
         message: error.text || "Internal server error",
     });
 });
+app.use('/auth', authroutes_1.default);
 const server = http_1.default.createServer(app);
 server.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Server listening on port ${port}`);

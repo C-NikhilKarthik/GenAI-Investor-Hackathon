@@ -16,7 +16,6 @@ config();
 const port = process.env.PORT || 5000;
 const mongoURL = process.env.MONGODB_URL || "mongodb+srv://mandar767:mandar2586@mandar.7wcjdwj.mongodb.net/";
 
-app.use('/auth', authRouter);
 
 
 app.use(cors());
@@ -46,6 +45,9 @@ app.use(
     });
   }
 );
+
+app.use('/auth', authRouter);
+
 
 const server = http.createServer(app);
 

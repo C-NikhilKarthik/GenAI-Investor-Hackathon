@@ -4,7 +4,7 @@ import { IRequest, IUserinfo } from '../types/IRequest';
 import { IError } from '../types/IError';
 let err: IError | undefined;
 const tokenDecode = (req: IRequest) => {
-    //@ts-ignore
+	
 	const token = req.header('Authorization')?.replace('Bearer ', '');
 	if (!token) {
 		return new IError('Token is Absent', 401);
