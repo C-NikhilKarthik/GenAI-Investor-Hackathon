@@ -22,7 +22,7 @@ const authroutes_1 = __importDefault(require("./routes/authroutes"));
 const app = (0, express_1.default)();
 (0, dotenv_1.config)();
 const port = process.env.PORT || 5000;
-const mongoURL = process.env.MONGODB_URL;
+const mongoURL = process.env.MONGODB_URL || "mongodb+srv://mandar767:mandar2586@mandar.7wcjdwj.mongodb.net/";
 app.use('/auth', authroutes_1.default);
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
