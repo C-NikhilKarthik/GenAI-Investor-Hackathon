@@ -16,7 +16,7 @@ completion = palm.generate_text(
     prompt=prompt,
     temperature=0,
     # The maximum length of the response
-    max_output_tokens=10,
+    max_output_tokens=100,
 )
 
 print(completion.result)

@@ -19,7 +19,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const http_1 = __importDefault(require("http"));
 const authroutes_1 = __importDefault(require("./routes/authroutes"));
-const uploadroutes_1 = __importDefault(require("./routes/uploadroutes"));
+const conversationroutes_1 = __importDefault(require("./routes/conversationroutes"));
 const app = (0, express_1.default)();
 (0, dotenv_1.config)();
 const port = process.env.PORT || 5000;
@@ -42,7 +42,7 @@ app.use((error, req, res, next) => {
     });
 });
 app.use('/auth', authroutes_1.default);
-app.use('/audio', uploadroutes_1.default);
+app.use('/api', conversationroutes_1.default);
 const server = http_1.default.createServer(app);
 server.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Server listening on port ${port}`);
