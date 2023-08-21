@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import http from "http";
 import { IError } from "./types/IError";
 import authRouter from "./routes/authroutes";
+import uploadRouter from "./routes/uploadroutes";
 
 
 const app = express();
@@ -47,6 +48,8 @@ app.use(
 );
 
 app.use('/auth', authRouter);
+
+app.use('/audio',uploadRouter)
 
 
 const server = http.createServer(app);

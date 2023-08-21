@@ -13,7 +13,7 @@ export const handleCallback: RequestHandler = async (req, res, next) => {
 			process.env.REDIRECT_URL,
 		);
 		const { code } = req.body;
-		console.log(code)
+		// console.log(code)
 		if (!code) {
 			throw new IError('Code not found', 404);
 		}
@@ -32,7 +32,7 @@ export const handleCallback: RequestHandler = async (req, res, next) => {
 		const email = userInfo.data.emailAddresses.find(
 			(email: any) => email.metadata.primary === true,
 		)?.value;
-		console.log(name,profileImage,email)
+		// console.log(name,profileImage,email)
 
 
 	

@@ -23,7 +23,6 @@ const handleCallback = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     try {
         const oauth2Client = new googleapis_1.google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.REDIRECT_URL);
         const { code } = req.body;
-        console.log(code);
         if (!code) {
             throw new IError_1.IError('Code not found', 404);
         }
@@ -33,7 +32,6 @@ const handleCallback = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         const name = (_a = userInfo.data.names.find((name) => name.metadata.primary === true)) === null || _a === void 0 ? void 0 : _a.displayName;
         const profileImage = (_b = userInfo.data.photos.find((photo) => photo.metadata.primary === true)) === null || _b === void 0 ? void 0 : _b.url;
         const email = (_c = userInfo.data.emailAddresses.find((email) => email.metadata.primary === true)) === null || _c === void 0 ? void 0 : _c.value;
-        console.log(name, profileImage, email);
         handleUsercreation(email, profileImage, name, access_token, refresh_token, res);
     }
     catch (error) {
