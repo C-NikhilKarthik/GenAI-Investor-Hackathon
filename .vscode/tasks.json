@@ -23,7 +23,7 @@
         { 
             "label": "client", 
             "type": "shell", 
-            "command": "cd client && npm install && npm start", 
+            "command": "cd client && npm install && npm run dev", 
             "isBackground": true, 
             "problemMatcher": [], 
             "presentation": { 
