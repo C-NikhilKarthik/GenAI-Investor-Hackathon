@@ -14,7 +14,7 @@ export default function Switcher() {
   };
 
   useEffect(()=>{
-    console.log(colorTheme);
+    // console.log(colorTheme);
   },[colorTheme]);
 
   return (

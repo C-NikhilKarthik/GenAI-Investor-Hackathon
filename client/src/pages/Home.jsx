@@ -3,7 +3,6 @@ import { Canvas } from "@react-three/fiber";
 import { MotionConfig } from "framer-motion";
 import { Leva } from "leva";
 import { useEffect, useState } from "react";
-import { Cursor } from "../components/Cursor";
 import { Experience } from "../components/Experience";
 import { Interface } from "../components/Interface";
 import { Menu } from "../components/Menu";
@@ -43,7 +42,6 @@ export default function Home() {
           menuOpened={menuOpened}
           setMenuOpened={setMenuOpened}
         />
-        <Cursor />
       </MotionConfig>
       <Leva hidden />
     </div>

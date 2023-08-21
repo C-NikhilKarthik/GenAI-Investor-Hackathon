@@ -1,4 +1,7 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from 'react';
+import CryptoJS from 'crypto-js';
+
 
 const Section = (props) => {
   const { children } = props;
@@ -28,6 +31,25 @@ const Section = (props) => {
 };
 
 export const Interface = () => {
+
+  const [decryptedToken, setDecryptedToken] = useState('');
+
+  useEffect(() => {
+    // Get the encrypted token from localStorage
+    const encryptedToken = localStorage.getItem('encryptedToken');
+
+    // Decryption key (you need to know this!)
+    const decryptionKey = 'your-secret-decryption-key';
+
+    if (encryptedToken && decryptionKey) {
+      // Decrypt the token using the key
+      const decryptedBytes = CryptoJS.AES.decrypt(encryptedToken, decryptionKey);
+      const Decryption = decryptedBytes.toString(CryptoJS.enc.Utf8);
+      console.log(Decryption);
+      setDecryptedToken(Decryption);
+    }
+  }, []);
+
   return (
     <div className="flex flex-col items-center w-screen">
       <AboutSection />
@@ -43,48 +65,51 @@ export const Interface = () => {
 const AboutSection = () => {
   return (
     <Section>
-      <h1 className="text-6xl font-extrabold leading-snug">
-        Hi, I'm
-        <br />
-        <span className="bg-white px-1 italic">Wawa Sensei</span>
-      </h1>
-      <motion.p
-        className="text-lg text-gray-600 mt-4"
-        initial={{
-          opacity: 0,
-          y: 25,
-        }}
-        whileInView={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 1,
-          delay: 1.5,
-        }}
-      >
-        I make YouTube videos to help developers
-        <br />
-        learn how to build 3D apps
-      </motion.p>
-      <motion.button
-        className={`bg-indigo-600 text-white py-4 px-8 
+      <div className="w-fit p-4 bg-slate-700/20 backdrop-blur rounded-lg">
+        <h1 className="text-6xl font-extrabold leading-snug">
+          Welcome Back
+          <br />
+          <span className="px-1 italic">C Nikhil Karthik</span>
+        </h1>
+        <motion.p
+          className="text-lg text-gray-600 mt-4"
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 1,
+            delay: 1.5,
+          }}
+        >
+          Clarify Your Doubts
+          <br />
+          learn how to build 3D apps
+        </motion.p>
+        <motion.button
+          className={`bg-indigo-600 text-white py-4 px-8 
       rounded-lg font-bold text-lg mt-16`}
-        initial={{
-          opacity: 0,
-          y: 25,
-        }}
-        whileInView={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          duration: 1,
-          delay: 2,
-        }}
-      >
-        Contact me
-      </motion.button>
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 1,
+            delay: 2,
+          }}
+        >
+          Contact me
+        </motion.button>
+      </div>
+
     </Section>
   );
 };
