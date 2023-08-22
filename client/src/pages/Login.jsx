@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+import { FcGoogle } from "react-icons/fc"
+
 export default function Login() {
+  useEffect(() => {
+    document.title = "NRAM.ai | Login"
+  })
   const handleGoogleSignIn = () => {
     // Implement Google sign-in logic here
     const clientId =
@@ -21,13 +27,28 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <button onClick={handleGoogleSignIn} type="button" className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
-        <svg className="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-          <path fillRule="evenodd" d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z" clipRule="evenodd" />
-        </svg>
-        Sign in with Google
-      </button>
+    <div className="w-screen h-screen flex items-center justify-center bg-[#e6e7ff]">
+      <div className="flex flex-col gap-4 items-center">
+        <div className="text-2xl text-slate-800 font-bold">Welcome Back</div>
+
+        <div className="relative z-0 w-full mb-2 group">
+          <input type="email" name="floating_email" id="floating_email" className="block rounded py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-[#cacbfe] appearance-none dark:text-white dark:border-gray-400 dark:focus:border-violet-500 focus:outline-none focus:ring-0 focus:border-violet-600 peer" placeholder=" " required />
+          <label htmlFor="floating_email" className="peer-focus:font-medium left-2 absolute text-sm bg-[#e6e7ff] z-10 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 peer-focus:left-2 origin-[0] peer-focus:text-violet-600 peer-focus:dark:text-violet-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-5 px-1">Email</label>
+        </div>
+
+        <button type="button" className="bg-violet-500 rounded w-full text-center py-2 text-slate-200">Continue</button>
+
+        <div className="flex items-center relative w-full justify-center py-4">
+          <div className="w-full h-[2px] bg-[#d7d8fe]"></div>
+          <div className="absolute -translate-x-1/2 left-1/2 bg-[#e6e7ff] p-2 text-slate-500">OR</div>
+        </div>
+
+        <button onClick={handleGoogleSignIn} type="button" className="flex items-center justify-center py-2 px-10 text-slate-700 rounded hover:bg-[#e3e4ff] focus:outline-none focus:ring focus:ring-[#e3e4ff] border-2 border-[#cacbfe]">
+          <FcGoogle className="mr-4" />
+          Continue with Google
+        </button>
+      </div>
+
     </div>
   );
 }

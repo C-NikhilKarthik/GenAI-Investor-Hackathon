@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
-import CryptoJS from "crypto-js";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Section = (props) => {
+
   const { children } = props;
 
   return (
@@ -35,11 +34,7 @@ export const Interface = () => {
   return (
     <div className="flex flex-col items-center w-screen">
       <AboutSection />
-      <SkillsSection />
-      <Section>
-        <h1>Projects</h1>
-      </Section>
-      <ContactSection />
+      <ExplainationBoard />
     </div>
   );
 };
@@ -82,18 +77,18 @@ const AboutSection = () => {
     getData();
   }, []);
 
-  
+
 
   return (
     <Section>
-      <div className="w-fit p-4 bg-slate-700/20 backdrop-blur rounded-lg">
+      <div className="w-fit p-4 bg-[#cacbfe]/20 backdrop-blur rounded-lg">
         <h1 className="text-6xl font-extrabold leading-snug">
           Welcome Back
           <br />
           <span className="px-1 italic">{data.name}</span>
         </h1>
         <motion.p
-          className="text-lg text-gray-600 mt-4"
+          className="text-lg text-[#22222c] mt-4"
           initial={{
             opacity: 0,
             y: 25,
@@ -109,10 +104,10 @@ const AboutSection = () => {
         >
           Clarify Your Doubts
           <br />
-          learn how to build 3D apps
+          Your AI Companion for Exploring and Learning
         </motion.p>
         <motion.button
-          className={`bg-indigo-600 text-white py-4 px-8 
+          className={`bg-violet-500 text-white py-4 px-8 
       rounded-lg font-bold text-lg mt-16`}
           initial={{
             opacity: 0,
@@ -170,147 +165,32 @@ const languages = [
     level: 20,
   },
 ];
-
-const SkillsSection = () => {
+const ExplainationBoard = () => {
   return (
-    <Section>
-      <motion.div whileInView={"visible"}>
-        <h2 className="text-5xl font-bold">Skills</h2>
-        <div className=" mt-8 space-y-4">
-          {skills.map((skill, index) => (
-            <div className="w-64" key={index}>
-              <motion.h3
-                className="text-xl font-bold text-gray-800"
-                initial={{
-                  opacity: 0,
-                }}
-                variants={{
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      duration: 1,
-                      delay: 1 + index * 0.2,
-                    },
-                  },
-                }}
-              >
-                {skill.title}
-              </motion.h3>
-              <div className="h-2 w-full bg-gray-200 rounded-full mt-2">
-                <motion.div
-                  className="h-full bg-indigo-500 rounded-full "
-                  style={{ width: `${skill.level}%` }}
-                  initial={{
-                    scaleX: 0,
-                    originX: 0,
-                  }}
-                  variants={{
-                    visible: {
-                      scaleX: 1,
-                      transition: {
-                        duration: 1,
-                        delay: 1 + index * 0.2,
-                      },
-                    },
-                  }}
-                />
-              </div>
+    <section className="w-screen h-screen flex justify-center items-center">
+      <motion.div className="h-full w-full p-4 md:p-20" whileInView={"visible"}>
+        <div className="h-full rounded bg-[#686882]/70 shadow-lg mr-44 backdrop-blur flex flex-col overflow-hidden">
+          <div className="w-full p-3 px-4 relative flex justify-between bg-slate-900">
+            <div className="flex items-center">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#EC6A5F]"></div>
+              <div className="ml-1.5 w-2.5 h-2.5 rounded-full bg-[#F4BF50]"></div>
+              <div className="ml-1.5 w-2.5 h-2.5 rounded-full bg-[#61C454]"></div>
+              <svg width="24" height="24" fill="none" className="ml-4 flex-none text-slate-400 dark:text-slate-500"><path d="m15 7-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+              <svg width="24" height="24" fill="none" className="ml-2 flex-none text-slate-400 dark:text-slate-500"><path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             </div>
-          ))}
-        </div>
-        <div>
-          <h2 className="text-5xl font-bold mt-10">Languages</h2>
-          <div className=" mt-8 space-y-4">
-            {languages.map((lng, index) => (
-              <div className="w-64" key={index}>
-                <motion.h3
-                  className="text-xl font-bold text-gray-800"
-                  initial={{
-                    opacity: 0,
-                  }}
-                  variants={{
-                    visible: {
-                      opacity: 1,
-                      transition: {
-                        duration: 1,
-                        delay: 2 + index * 0.2,
-                      },
-                    },
-                  }}
-                >
-                  {lng.title}
-                </motion.h3>
-                <div className="h-2 w-full bg-gray-200 rounded-full mt-2">
-                  <motion.div
-                    className="h-full bg-indigo-500 rounded-full "
-                    style={{ width: `${lng.level}%` }}
-                    initial={{
-                      scaleX: 0,
-                      originX: 0,
-                    }}
-                    variants={{
-                      visible: {
-                        scaleX: 1,
-                        transition: {
-                          duration: 1,
-                          delay: 2 + index * 0.2,
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+            <div>
+              <svg width="24" height="24" fill="none" className="text-slate-400 dark:text-slate-500">
+                <path d="M12.5 6a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM12.5 12a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM18.5 6a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM18.5 12a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM6.5 6a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM6.5 12a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM12.5 18a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM18.5 18a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM6.5 18a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"></path>
+              </svg>
+            </div>
+
+            <div className="absolute left-1/2 top-2 -translate-x-1/2">
+              <div><div className="bg-slate-100 rounded-md font-medium text-xs leading-6 py-1 flex items-center justify-center ring-1 ring-inset ring-slate-900/5 mx-auto px-10 dark:bg-slate-800 dark:text-slate-500"><svg viewBox="0 0 20 20" fill="currentColor" className="text-slate-300 w-3.5 h-3.5 mr-1.5 dark:text-slate-500"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>NRAM.ai</div></div>
+            </div>
           </div>
         </div>
       </motion.div>
-    </Section>
-  );
-};
+    </section>
+  )
+}
 
-const ContactSection = () => {
-  return (
-    <Section>
-      <h2 className="text-5xl font-bold">Contact me</h2>
-      <div className="mt-8 p-8 rounded-md bg-white w-96 max-w-full">
-        <form>
-          <label for="name" className="font-medium text-gray-900 block mb-1">
-            Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-3"
-          />
-          <label
-            for="email"
-            className="font-medium text-gray-900 block mb-1 mt-8"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-3"
-          />
-          <label
-            for="email"
-            className="font-medium text-gray-900 block mb-1 mt-8"
-          >
-            Message
-          </label>
-          <textarea
-            name="message"
-            id="message"
-            className="h-32 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-3"
-          />
-          <button className="bg-indigo-600 text-white py-4 px-8 rounded-lg font-bold text-lg mt-16 ">
-            Submit
-          </button>
-        </form>
-      </div>
-    </Section>
-  );
-};

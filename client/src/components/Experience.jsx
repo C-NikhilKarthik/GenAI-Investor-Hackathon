@@ -12,6 +12,7 @@ import { Avatar } from "./Avatar";
 import { Office } from "./Office";
 
 export const Experience = (props) => {
+  const { width, height } = useThree(state => state.viewport)
   const { section, menuOpened } = props;
   const { viewport } = useThree();
 
@@ -91,10 +92,12 @@ export const Experience = (props) => {
             />
           </mesh>
         </Float>
-        <group scale={[2, 2, 2]} position-y={-1.5} rotation={[-Math.PI/2, 0, -Math.PI/10]}
->
+        <group
+          scale={section === 0 ? [2, 2, 2] : [3, 3, 3]} position-y={section === 0 ? -1.5 : -3.6} position-x={section === 0 ? 0 : width/2 - 1.5 } rotation={[-Math.PI / 2, 0, -Math.PI / 10]}
+        >
           <Avatar animation={section === 0 ? "Falling" : "Standing"} />
         </group>
+
       </motion.group>
     </>
   );

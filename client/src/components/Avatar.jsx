@@ -18,6 +18,7 @@ export function Avatar(props) {
   const { nodes, materials } = useGLTF("models/646d9dcdc8a5f5bddbfac913.glb");
 
   const { animations: typingAnimation } = useFBX("animations/Typing.fbx");
+  const { animations: wavingAnimation } = useFBX("animations/Waving.fbx");
   const { animations: standingAnimation } = useFBX(
     "animations/Standing Idle.fbx"
   );
@@ -28,9 +29,10 @@ export function Avatar(props) {
   typingAnimation[0].name = "Typing";
   standingAnimation[0].name = "Standing";
   fallingAnimation[0].name = "Falling";
+  wavingAnimation[0].name = "Waving";
 
   const { actions } = useAnimations(
-    [typingAnimation[0], standingAnimation[0], fallingAnimation[0]],
+    [typingAnimation[0], standingAnimation[0], fallingAnimation[0],wavingAnimation[0]],
     group
   );
 

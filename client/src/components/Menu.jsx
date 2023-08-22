@@ -1,4 +1,5 @@
 import Switcher from "./Switcher"
+import Logout from "./Logout"
 export const Menu = (props) => {
   const { onSectionChange, menuOpened, setMenuOpened } = props;
 
@@ -6,22 +7,19 @@ export const Menu = (props) => {
     <>
       <button
         onClick={() => setMenuOpened(!menuOpened)}
-        className="z-20 fixed top-12 right-12 p-3 bg-indigo-600 w-11 h-11 rounded-md"
+        className="z-20 fixed top-12 right-12 p-3 bg-violet-500 w-11 h-11 rounded-md"
       >
         <div
-          className={`bg-white h-0.5 rounded-md w-full transition-all ${
-            menuOpened ? "rotate-45  translate-y-0.5" : ""
-          }`}
+          className={`bg-white h-0.5 rounded-md w-full transition-all ${menuOpened ? "rotate-45  translate-y-0.5" : ""
+            }`}
         />
         <div
-          className={`bg-white h-0.5 rounded-md w-full my-1 ${
-            menuOpened ? "hidden" : ""
-          }`}
+          className={`bg-white h-0.5 rounded-md w-full my-1 ${menuOpened ? "hidden" : ""
+            }`}
         />
         <div
-          className={`bg-white h-0.5 rounded-md w-full transition-all ${
-            menuOpened ? "-rotate-45" : ""
-          }`}
+          className={`bg-white h-0.5 rounded-md w-full transition-all ${menuOpened ? "-rotate-45" : ""
+            }`}
         />
       </button>
       <div
@@ -33,7 +31,8 @@ export const Menu = (props) => {
           <MenuButton label="Skills" onClick={() => onSectionChange(1)} />
           <MenuButton label="Projects" onClick={() => onSectionChange(2)} />
           <MenuButton label="Contact" onClick={() => onSectionChange(3)} />
-          <Switcher/>
+          <Switcher />
+          <Logout />
         </div>
       </div>
     </>
@@ -45,7 +44,7 @@ const MenuButton = (props) => {
   return (
     <button
       onClick={onClick}
-      className="text-2xl font-bold cursor-pointer hover:text-indigo-600 transition-colors"
+      className="text-2xl font-bold cursor-pointer hover:text-violet-500 transition-colors"
     >
       {label}
     </button>
