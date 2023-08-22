@@ -13,23 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getConversation = exports.saveConversation = void 0;
-const axios_1 = __importDefault(require("axios"));
+const text_service_client_1 = require("@google-ai/generativelanguage/build/src/v1beta2/text_service_client");
+const google_auth_library_1 = require("google-auth-library");
 const ConversationSchema_1 = __importDefault(require("../models/ConversationSchema"));
+require("dotenv").config();
+const MODEL_NAME = "models/text-bison-001";
 const PALM_KEY = process.env.PALM_API_KEY;
-const apiUrl = "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
-const headers = {
-    'Content-Type': 'application/json',
-    'x-goog-api-key': PALM_KEY
-};
+const client = new text_service_client_1.TextServiceClient({
+    authClient: new google_auth_library_1.GoogleAuth().fromAPIKey(PALM_KEY || ""),
+});
 function generateResponse(prompt) {
     return __awaiter(this, void 0, void 0, function* () {
-        const data = {
-            prompt: prompt,
-            temperature: 0,
-            maxOutputTokens: 100
-        };
-        const response = yield axios_1.default.post(apiUrl, data, { headers });
-        return response.data;
+        console.log(PALM_KEY);
+        const input = prompt;
+        const result = yield client.generateText({
+            model: MODEL_NAME,
+            prompt: {
+                text: input,
+            },
+        });
+        return JSON.stringify(result);
     });
 }
 const saveConversation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -38,14 +41,16 @@ const saveConversation = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         const { prompt } = req.body;
         const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         const response = yield generateResponse(prompt);
+        const parsedResponse = JSON.parse(response);
+        const output = parsedResponse[0].candidates[0].output;
+        console.log(output);
         const conversation = new ConversationSchema_1.default({
             userId,
             prompt,
-            response,
+            response: output,
         });
         yield conversation.save();
-        console.log(response);
-        res.status(201).json({ message: 'Conversation saved successfully' });
+        res.status(201).json({ output });
     }
     catch (error) {
         next(error);
@@ -58,11 +63,14 @@ const getConversation = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         const userId = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         const conversationData = yield ConversationSchema_1.default.find({ userId });
         console.log(conversationData);
-        res.status(200).json({ message: 'Conversation data retrieved successfully', data: conversationData });
+        res.status(200).json({
+            message: "Conversation data retrieved successfully",
+            data: conversationData,
+        });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'An error occurred' });
+        res.status(500).json({ message: "An error occurred" });
     }
 });
 exports.getConversation = getConversation;
