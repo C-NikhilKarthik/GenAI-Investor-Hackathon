@@ -7,6 +7,7 @@ import http from "http";
 import { IError } from "./types/IError";
 import authRouter from "./routes/authroutes";
 import conversationRouter from "./routes/conversationroutes";
+import userinfoRouter from "./routes/userinforoutes";
 
 
 
@@ -44,7 +45,7 @@ app.use(
         : 500;
     res.status(statusCode).json({
       message: error.text || "Internal server error",
-    });
+    }); 
   }
 );
 
@@ -52,7 +53,7 @@ app.use('/auth', authRouter);
 
 app.use('/api', conversationRouter);
 
-
+app.use('/user', userinfoRouter)
 
 
 

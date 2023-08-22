@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from 'react';
-import CryptoJS from 'crypto-js';
-
+import { useState, useEffect, useCallback } from "react";
+import CryptoJS from "crypto-js";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Section = (props) => {
   const { children } = props;
@@ -31,25 +32,6 @@ const Section = (props) => {
 };
 
 export const Interface = () => {
-
-  const [decryptedToken, setDecryptedToken] = useState('');
-
-  useEffect(() => {
-    // Get the encrypted token from localStorage
-    const encryptedToken = localStorage.getItem('encryptedToken');
-
-    // Decryption key (you need to know this!)
-    const decryptionKey = 'your-secret-decryption-key';
-
-    if (encryptedToken && decryptionKey) {
-      // Decrypt the token using the key
-      const decryptedBytes = CryptoJS.AES.decrypt(encryptedToken, decryptionKey);
-      const Decryption = decryptedBytes.toString(CryptoJS.enc.Utf8);
-      console.log(Decryption);
-      setDecryptedToken(Decryption);
-    }
-  }, []);
-
   return (
     <div className="flex flex-col items-center w-screen">
       <AboutSection />
@@ -63,13 +45,52 @@ export const Interface = () => {
 };
 
 const AboutSection = () => {
+  const [data, setData] = useState({
+    name: "",
+    profileImage: "",
+  });
+
+  const getData = useCallback(() => {
+    const token = localStorage.getItem("token"); // Replace 'token' with your actual key
+
+    axios
+      .get("http://localhost:5000/user/userinfo", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the 'Authorization' header
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        const { name, profileImage } = response.data;
+        setData({
+          name: name,
+          profileImage: profileImage,
+        });
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(
+            "Server responded with an error status:",
+            error.response.status
+          );
+          console.log("Response data:", error.response.data);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  
+
   return (
     <Section>
       <div className="w-fit p-4 bg-slate-700/20 backdrop-blur rounded-lg">
         <h1 className="text-6xl font-extrabold leading-snug">
           Welcome Back
           <br />
-          <span className="px-1 italic">C Nikhil Karthik</span>
+          <span className="px-1 italic">{data.name}</span>
         </h1>
         <motion.p
           className="text-lg text-gray-600 mt-4"
@@ -109,7 +130,6 @@ const AboutSection = () => {
           Contact me
         </motion.button>
       </div>
-
     </Section>
   );
 };
