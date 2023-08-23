@@ -3,9 +3,14 @@ import { TextServiceClient } from "@google-ai/generativelanguage/build/src/v1bet
 import { GoogleAuth } from "google-auth-library";
 import ConversationModel from "../models/ConversationSchema";
 import { IRequest } from "../types/IRequest";
-
+import * as fs from "fs";
+import * as path from "path";
+import axios from "axios"
+import FormData from "form-data";
 // Load environment variables from .env file
 require("dotenv").config();
+
+// Route to handle audio data
 
 const MODEL_NAME = "models/text-bison-001";
 const PALM_KEY = process.env.PALM_API_KEY;
@@ -16,7 +21,7 @@ const client = new TextServiceClient({
 });
 
 async function generateResponse(prompt: string): Promise<string> {
-  console.log(PALM_KEY); // Debugging statement
+
 
   const input = prompt;
 
@@ -30,35 +35,59 @@ async function generateResponse(prompt: string): Promise<string> {
   return JSON.stringify(result);
 }
 
-// Rest of your code...
-
 export const saveConversation: RequestHandler = async (
   req: IRequest,
   res,
   next
 ) => {
   try {
-    const { prompt } = req.body;
-    const userId = req.user?.id;
+    if (!req.file) {
+      return res.status(400).json({ error: "No audio file provided" });
+    }
 
-    const response = await generateResponse(prompt);
-    const parsedResponse = JSON.parse(response);
+    const tempFilePath = path.join(process.cwd(), "audio_files", "audio.wav");
+    fs.writeFileSync(tempFilePath, req.file.buffer);
+
+    const audioFile = fs.createReadStream(tempFilePath);
+
+    let data = new FormData();
+    data.append("file", audioFile);
+    data.append("model", "whisper-1");
+
+    let config = { 
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://api.openai.com/v1/audio/transcriptions",
+      headers: {
+        Authorization:
+          `Bearer ${process.env.OPENAI_KEY}`,
+        ...data.getHeaders(),
+      },
+      data: data,
+    };
+
+    const response = await axios(config);
+    console.log(response.data?.text);
+
+    const response2 = await generateResponse(response.data?.text);
+    const parsedResponse = JSON.parse(response2);
     const output = parsedResponse[0].candidates[0].output;
-    console.log(output);
 
+    console.log(output)
+    const userId = req.user?.id;
     const conversation = new ConversationModel({
       userId,
-      prompt,
+      prompt:response.data?.text,
       response: output,
     });
 
     await conversation.save();
 
-    res.status(201).json({ output });
 
-    // res.status(201).json({ message: 'Conversation saved successfully' });
-  } catch (error) {
-    next(error);
+    res.status(201).json({ output });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
