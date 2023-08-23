@@ -43,6 +43,7 @@ function Voice() {
       stopRecording();
       sendAudio(audioRef.current, recordingBlob)
         .then((data) => {
+          console.log(data);
           console.log("server responded");
         })
         .catch((err) => {
@@ -74,8 +75,8 @@ function Voice() {
           {status === "idle" && "Record"}
           {status === "recording" && "Stop"}
         </>
-      </button>{" "}
-      <audio src={recordingBlob} ref={audioRef} />{" "}
+      </button>
+      <audio src={recordingBlob} ref={audioRef} />
     </div>
   );
 }

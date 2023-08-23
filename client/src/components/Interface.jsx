@@ -1,8 +1,40 @@
 import { motion } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useReactMediaRecorder } from "react-media-recorder";
+import { useState, useEffect, useCallback, useRef } from "react";
 // import useClipboard from "react-use-clipboard";
 // import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from "axios";
+
+function startSpeech(text) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  const synth = window.speechSynthesis;
+
+  synth.cancel();
+  synth.speak(utterance);
+}
+
+async function sendAudio(audio, blob) {
+  audio.src = blob;
+
+  const audioBlob = await fetch(audio.src).then((res) => res.blob());
+
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "audio.wav");
+  formData.append("id", localStorage.getItem("token"));
+
+  const headers = new Headers();
+  headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+  const response = await fetch("http://localhost:5000" + "/api/conversation", {
+    method: "POST",
+    body: formData,
+    headers,
+  });
+
+  const data = await response.json();
+
+  return data;
+}
 
 const Section = (props) => {
 
@@ -132,17 +164,49 @@ const AboutSection = () => {
 };
 
 const InputBoard = () => {
-  // const [textToCopy, setTextToCopy] = useState();
-  // const [isCopied, setCopied] = useClipboard(textToCopy, {
-  //     successDuration:1000
-  // });
+  const [Data, setData] = useState({
+    prompt: "",
+    solution: ""
+  })
 
-  // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
-  // const { transcript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+  const audioRef = useRef(null);
+  const {
+    clearBlobUrl,
+    startRecording,
+    stopRecording,
+    status,
+    mediaBlobUrl: recordingBlob,
+  } = useReactMediaRecorder({
+    audio: true,
+    video: false,
+    blobPropertyBag: { type: "audio/wav", endings: "native" },
+  });
 
-  // if (!browserSupportsSpeechRecognition) {
-  //     return null
-  // }
+  useEffect(() => {
+    if (status === "stopped") {
+      stopRecording();
+      sendAudio(audioRef.current, recordingBlob)
+        .then((data) => {
+          console.log("server responded");
+          setData((prevData) => ({
+            ...prevData,
+            prompt: data, // Update the prompt with the received data
+          }));
+
+          startSpeech(data.output)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      clearBlobUrl();
+    }
+  }, [status]);
+
+  useEffect(() => {
+    return () => {
+      clearBlobUrl();
+    };
+  }, []);
 
   return (
     <section className="w-screen h-screen flex justify-center items-center">
@@ -166,28 +230,28 @@ const InputBoard = () => {
               <div><div className="bg-slate-100 rounded-md font-medium text-xs leading-6 py-1 flex items-center justify-center ring-1 ring-inset ring-slate-900/5 mx-auto px-10 dark:bg-slate-800 dark:text-slate-500"><svg viewBox="0 0 20 20" fill="currentColor" className="text-slate-300 w-3.5 h-3.5 mr-1.5 dark:text-slate-500"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>NRAM.ai</div></div>
             </div>
           </div>
-          <div>
-          {/* <div className="container">
-                <h2>Speech to Text Converter</h2>
-                <br/>
-                <p>A React hook that converts speech from the microphone to text and makes it available to your React
-                    components.</p>
+          <div className="h-full overflow-y-auto p-4">
+          <div className="text-gray-400 bg-gray-700 border-2 p-2 rounded border-gray-400">{Data.prompt.output}</div>
 
-                <div className="main-content" onClick={() =>  setTextToCopy(transcript)}>
-                    {transcript}
-                </div>
 
-                <div className="btn-style">
-
-                    <button onClick={setCopied}>
-                        {isCopied ? 'Copied!' : 'Copy to clipboard'}
-                    </button>
-                    <button onClick={startListening}>Start Listening</button>
-                    <button onClick={SpeechRecognition.stopListening}>Stop Listening</button>
-
-                </div>
-
-            </div> */}
+          </div>
+          <div className="p-4 bg-gray-700 rounded shadow m-4">
+            <button className="text-gray-400 w-full h-full"
+              onClick={() => {
+                if (status === "recording") {
+                  stopRecording();
+                } else {
+                  startRecording();
+                }
+                status === "";
+              }}
+            >
+              <>
+                {status === "idle" && "Record"}
+                {status === "recording" && "Stop Recording"}
+              </>
+            </button>
+            <audio src={recordingBlob} ref={audioRef} />
           </div>
         </div>
       </motion.div>
