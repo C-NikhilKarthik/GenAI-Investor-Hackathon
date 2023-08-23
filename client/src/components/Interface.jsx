@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
+// import useClipboard from "react-use-clipboard";
+// import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from "axios";
 
 const Section = (props) => {
@@ -34,7 +36,7 @@ export const Interface = () => {
   return (
     <div className="flex flex-col items-center w-screen">
       <AboutSection />
-      <ExplainationBoard />
+      <InputBoard />
     </div>
   );
 };
@@ -129,43 +131,19 @@ const AboutSection = () => {
   );
 };
 
-const skills = [
-  {
-    title: "Threejs / React Three Fiber",
-    level: 80,
-  },
-  {
-    title: "React / React Native",
-    level: 90,
-  },
-  {
-    title: "Nodejs",
-    level: 90,
-  },
-  {
-    title: "Typescript",
-    level: 60,
-  },
-  {
-    title: "3D Modeling",
-    level: 40,
-  },
-];
-const languages = [
-  {
-    title: "🇫🇷 French",
-    level: 100,
-  },
-  {
-    title: "🇺🇸 English",
-    level: 80,
-  },
-  {
-    title: "🇯🇵 Japanese",
-    level: 20,
-  },
-];
-const ExplainationBoard = () => {
+const InputBoard = () => {
+  // const [textToCopy, setTextToCopy] = useState();
+  // const [isCopied, setCopied] = useClipboard(textToCopy, {
+  //     successDuration:1000
+  // });
+
+  // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+  // const { transcript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+
+  // if (!browserSupportsSpeechRecognition) {
+  //     return null
+  // }
+
   return (
     <section className="w-screen h-screen flex justify-center items-center">
       <motion.div className="h-full w-full p-4 md:p-20" whileInView={"visible"}>
@@ -187,6 +165,29 @@ const ExplainationBoard = () => {
             <div className="absolute left-1/2 top-2 -translate-x-1/2">
               <div><div className="bg-slate-100 rounded-md font-medium text-xs leading-6 py-1 flex items-center justify-center ring-1 ring-inset ring-slate-900/5 mx-auto px-10 dark:bg-slate-800 dark:text-slate-500"><svg viewBox="0 0 20 20" fill="currentColor" className="text-slate-300 w-3.5 h-3.5 mr-1.5 dark:text-slate-500"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>NRAM.ai</div></div>
             </div>
+          </div>
+          <div>
+          {/* <div className="container">
+                <h2>Speech to Text Converter</h2>
+                <br/>
+                <p>A React hook that converts speech from the microphone to text and makes it available to your React
+                    components.</p>
+
+                <div className="main-content" onClick={() =>  setTextToCopy(transcript)}>
+                    {transcript}
+                </div>
+
+                <div className="btn-style">
+
+                    <button onClick={setCopied}>
+                        {isCopied ? 'Copied!' : 'Copy to clipboard'}
+                    </button>
+                    <button onClick={startListening}>Start Listening</button>
+                    <button onClick={SpeechRecognition.stopListening}>Stop Listening</button>
+
+                </div>
+
+            </div> */}
           </div>
         </div>
       </motion.div>
