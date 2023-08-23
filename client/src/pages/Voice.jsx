@@ -13,7 +13,7 @@ async function sendAudio(audio, blob) {
   const headers = new Headers();
   headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
-  const response = await fetch("http://localhost:5000" + "/audio", {
+  const response = await fetch("http://localhost:5000" + "/api/conversation", {
     method: "POST",
     body: formData,
     headers,
