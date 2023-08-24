@@ -5,14 +5,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 // import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from "axios";
 
-function startSpeech(text) {
-  const utterance = new SpeechSynthesisUtterance(text);
-  const synth = window.speechSynthesis;
-
-  synth.cancel();
-  synth.speak(utterance);
-}
-
 async function sendAudio(audio, blob) {
   audio.src = blob;
 
@@ -166,8 +158,32 @@ const AboutSection = () => {
 const InputBoard = () => {
   const [Data, setData] = useState({
     prompt: "",
-    solution: ""
+    solution: "",
+    isPlaying: false,
+    synthesis: null
   })
+
+  function startSpeech(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    const synth = window.speechSynthesis;
+
+    synth.cancel();
+    synth.speak(utterance);
+
+    setData((prevData) => ({
+      ...prevData,
+      isPlaying: true,
+      synthesis: synth
+    }));
+  }
+
+  function stopSpeech() {
+    Data.synthesis.cancel();
+    setData((prevData) => ({
+      ...prevData,
+      isPlaying: false, // Update the prompt with the received data
+    }));
+  }
 
   const audioRef = useRef(null);
   const {
@@ -230,10 +246,13 @@ const InputBoard = () => {
               <div><div className="bg-slate-100 rounded-md font-medium text-xs leading-6 py-1 flex items-center justify-center ring-1 ring-inset ring-slate-900/5 mx-auto px-10 dark:bg-slate-800 dark:text-slate-500"><svg viewBox="0 0 20 20" fill="currentColor" className="text-slate-300 w-3.5 h-3.5 mr-1.5 dark:text-slate-500"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>NRAM.ai</div></div>
             </div>
           </div>
-          <div className="h-full overflow-y-auto p-4">
-          <div className="text-gray-400 bg-gray-700 border-2 p-2 rounded border-gray-400">{Data.prompt.output}</div>
-
-
+          <div className="h-full relative overflow-y-auto p-4">
+            <div className="text-gray-400 bg-gray-700 border-2 p-2 rounded border-gray-400">{Data.prompt.output}</div>
+            {
+              Data.isPlaying && (
+                <button onClick={stopSpeech} className="absolute bottom-2 right-2 bg-gray-500 text-white py-4 px-8 rounded-lg font-bold text-lg mt-16">Stop Speech</button>
+              )
+            }
           </div>
           <div className="p-4 bg-gray-700 rounded shadow m-4">
             <button className="text-gray-400 w-full h-full"
