@@ -82,7 +82,7 @@ const saveConversation = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         };
         const response = yield (0, axios_1.default)(config);
         console.log((_a = response.data) === null || _a === void 0 ? void 0 : _a.text);
-        const response2 = yield generateResponse((_b = response.data) === null || _b === void 0 ? void 0 : _b.text);
+        const response2 = yield generateResponse(`if the question is Share this video with your friends on social media then say i did'nt heard anything if the question is related to stock market,stock exchange,investing then only answer.For other questions reply that I am not trained to answer this questions, The question is :${(_b = response.data) === null || _b === void 0 ? void 0 : _b.text} `);
         const parsedResponse = JSON.parse(response2);
         const output = parsedResponse[0].candidates[0].output;
         console.log(output);
